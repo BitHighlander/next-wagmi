@@ -19,8 +19,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/constants/providers": ["./src/constants/providers"],
+      "@/lib/hooks": ["./src/lib/hooks"]
+    },
+    "baseUrl": "."
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

@@ -15,7 +15,7 @@ const ForceDarkMode = ({ children }: { children: React.ReactNode }) => {
 
     return <>{children}</>;
 };
-import { config } from '@/wagmi'
+import { config } from 'wagmi'
 console.log("config: ", config)
 export function Providers(props: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())

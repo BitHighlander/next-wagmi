@@ -1,31 +1,32 @@
 'use client'
-
 import { useState } from 'react'
 import { useAccount, useEnsName, useConnect, useDisconnect } from 'wagmi'
 import { walletConnect, injected } from '@wagmi/connectors'
 import { Box, Text, Button, VStack } from '@chakra-ui/react'
 import { useReadProTokenBalanceOf } from '../generated'
+// import { usePool, PoolState } from '../hooks/useUniswapPoolData' // Adjust the import path as necessary
+import { Token, WETH9 } from '@uniswap/sdk-core'
 
-const BURN_ADDRESS = '0x000000000000000000000000000000000000dEaD'
+const BURN_ADDRESS: any = '0x000000000000000000000000000000000000dEaD'
 
-function Profile() {
-    const { address } = useAccount()
-    const { data: ensName, error, status } = useEnsName({ address })
+function Profile(): any {
+    const { address }: any = useAccount()
+    const { data: ensName, error, status }: any = useEnsName({ address })
 
     if (status === 'loading') return <div>Loading ENS name...</div>
     if (status === 'error') return <div>Error fetching ENS name: {error.message}</div>
     return <div>ENS Name: {ensName || 'No ENS name'}</div>
 }
 
-export default function HomePage() {
-    const { connect } = useConnect({
+export default function HomePage(): any {
+    const { connect }: any = useConnect({
         connectors: [
             injected(),
             walletConnect({
                 options: {
                     projectId: '3fcc6bba6f1de962d911bb5b5c3dba68',
                     rpc: {
-                        1: 'https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID', // Replace with your RPC URL
+                        1: 'https://eth.llamarpc.com', // Replace with your RPC URL
                         8453: 'https://mainnet.base.org', // Base chain RPC URL
                     },
                     qrcode: true,
@@ -33,19 +34,24 @@ export default function HomePage() {
             }),
         ],
     })
-    const { disconnect } = useDisconnect()
-    const { isConnected, address } = useAccount()
-    const { chain } = useAccount()
-    const [status, setStatus] = useState('')
+    const { disconnect }: any = useDisconnect()
+    const { isConnected, address }: any = useAccount()
+    const [status, setStatus]: any = useState('')
 
-    // Read the PRO token balance using the generated hook
-    const { data: proBalance, isError, isLoading } = useReadProTokenBalanceOf({
+    const { data: proBalance, isError, isLoading }: any = useReadProTokenBalanceOf({
         args: address ? [address] : undefined,
-        chainId: chain?.id, // Ensure we're using the correct chain ID
+        chainId: 8453, // Ensure we're using the correct chain ID
         enabled: !!address,
     })
 
-    const handleButtonClick = async () => {
+    // Example tokens, replace with actual tokens and fee amount
+    const tokenA: any = new Token(8453, '0xTokenA', 18, 'TOKENA', 'Token A')
+    const tokenB: any = WETH9[8453]
+    const feeAmount: any = 3000
+
+    // const [poolState, pool]: any = usePool(tokenA, tokenB, feeAmount)
+
+    const handleButtonClick: any = async () => {
         if (!isConnected) {
             setStatus('Connect your wallet first.')
             return
@@ -55,9 +61,8 @@ export default function HomePage() {
 
         try {
             // Add your transaction logic here
-
             setStatus('Transaction completed successfully.')
-        } catch (error) {
+        } catch (error: any) {
             setStatus('Transaction failed. ' + error.message)
         }
     }
@@ -85,7 +90,7 @@ export default function HomePage() {
                                 options: {
                                     projectId: '3fcc6bba6f1de962d911bb5b5c3dba68',
                                     rpc: {
-                                        1: 'https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID', // Replace with your RPC URL
+                                        1: 'https://eth.llamarpc.com', // Replace with your RPC URL
                                         8453: 'https://mainnet.base.org', // Base chain RPC URL
                                     },
                                     qrcode: true,
